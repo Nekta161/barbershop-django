@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid justify-content-center">
+        <div class="d-flex">
+            <!-- Основные ссылки -->
+            <a href="{% url 'landing' %}" class="nav-block">
+                <div class="nav-block-content">Главная</div>
+            </a>
+            <a href="{% url 'thanks' %}" class="nav-block">
+                <div class="nav-block-content">Спасибо за заявку</div>
+            </a>
+            <a href="{% url 'orders_list' %}" class="nav-block">
+                <div class="nav-block-content">Список заявок</div>
+            </a>
+
+            <!-- Якорные ссылки для секций на главной странице -->
+            <a href="{% url 'landing' %}about" class="nav-block">
+                <div class="nav-block-content">О нас</div>
+            </a>
+            <a href="{% url 'landing' %}services" class="nav-block">
+                <div class="nav-block-content">Услуги</div>
+            </a>
+            <a href="{% url 'landing' %}masters" class="nav-block">
+                <div class="nav-block-content">Мастера</div>
+            </a>
+            <a href="{% url 'landing' %}appointment" class="nav-block">
+                <div class="nav-block-content">Запись</div>
+            </a>
+        </div>
+    </div>
+</nav>
