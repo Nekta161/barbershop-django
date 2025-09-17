@@ -1,13 +1,72 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% block title %}Заявки — Nekta161 BarberShop{% endblock %}
+
 {% block content %}
-    {% if user.is_staff %}
-        <h1>Список заявок</h1>
-        <div class="flex-container">
+    <h2 class="mb-4">Список заявок</h2>
+
+    {% if user.is_authenticated %}
+        <!-- Поиск -->
+        <form method="GET" class="mb-4">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <input type="text" name="q" class="form-control" placeholder="Поиск по имени, телефону или комментарию" value="{{ query }}">
+                </div>
+                <div class="col-md-6">
+                    <div class="row g-2">
+                        <div class="col-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="search_name" id="search_name" value="on" {% if search_name == 'on' %}checked{% endif %}>
+                                <label class="form-check-label" for="search_name">Имя клиента</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="search_phone" id="search_phone" value="on" {% if search_phone == 'on' %}checked{% endif %}>
+                                <label class="form-check-label" for="search_phone">Телефон</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="search_comment" id="search_comment" value="on" {% if search_comment == 'on' %}checked{% endif %}>
+                                <label class="form-check-label" for="search_comment">Комментарий</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Найти</button>
+        </form>
+
+        <!-- Список заявок -->
+        <div class="row">
             {% for order in orders %}
-                {% include "order_detail.html" with order=order %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">{{ order.appointment_date|date:"d.m.Y H:i" }}</h6>
+                            <h5 class="card-title">{{ order.client_name }}</h5>
+                            <p class="card-text small">
+                                <strong>Телефон:</strong> {{ order.phone }}<br>
+                                <strong>Статус:</strong> {{ order.get_status_display }}<br>
+                                <strong>Мастер:</strong> {{ order.master.name }}<br>
+                                <strong>Услуги:</strong>
+                                {% for service in order.services.all %}
+                                    <span class="badge bg-info">{{ service.name }}</span>
+                                {% endfor %}
+                            </p>
+                            <a href="{% url 'order_detail' order.pk %}" class="btn btn-outline-primary btn-sm">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center text-muted">Заявок не найдено.</div>
             {% endfor %}
         </div>
+
     {% else %}
-        <p>У вас нет прав для просмотра списка заявок.</p>
+        <div class="alert alert-warning">
+            Для просмотра заявок необходимо <a href="{% url 'login' %}">авторизоваться</a>.
+        </div>
     {% endif %}
-{% endblock content %}
+{% endblock %}
