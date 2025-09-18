@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Записаться — Nekta161 BarberShop{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Записаться на услугу</h2>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger text-center">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="row g-3">
+            <div class="col-12">
+                {{ form.master.label_tag }}
+                {{ form.master }}
+            </div>
+
+            <div class="col-12">
+                {{ form.client_name.label_tag }}
+                {{ form.client_name }}
+            </div>
+
+            <div class="col-12">
+                {{ form.phone.label_tag }}
+                {{ form.phone }}
+            </div>
+
+            <div class="col-12">
+                {{ form.appointment_date.label_tag }}
+                {{ form.appointment_date }}
+            </div>
+
+            <div class="col-12">
+                <label class="form-label">Услуги</label>
+                <div class="row">
+                    {% for field in form.services %}
+                        <div class="col-6 col-md-4">
+                            <div class="form-check">
+                                {{ field.tag }}
+                                <label class="form-check-label">{{ field.choice_label }}</label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-12">
+                {{ form.comment.label_tag }}
+                {{ form.comment }}
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary btn-lg w-100">Записаться</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

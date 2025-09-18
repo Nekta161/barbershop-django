@@ -29,6 +29,7 @@ BarberShop{%endblock %} {% block content %}
             <span class="badge bg-primary me-1">{{ service.name }}</span>
             {% endfor %}
           </p>
+          <a href="{% url 'create_order' %}?master={{ master.id }}" class="btn btn-outline-primary btn-sm">Записаться</a>
         </div>
       </div>
     </div>

@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .models import Master, Review, Order
 from django.db.models import Sum
+from .forms import ReviewForm, OrderForm
+from django.contrib import messages
 
 
 def landing(request):
@@ -57,3 +59,31 @@ def order_detail(request, pk):
         .get(pk=pk)
     )
     return render(request, "order_detail.html", {"order": order})
+
+
+def create_order(request):
+    if request.method == "POST":
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Ваша заявка успешно отправлена!")
+            return redirect("/thanks/")
+    else:
+        form = OrderForm()
+    return render(request, "create_order.html", {"form": form})
+
+
+def create_review(request):
+    if request.method == "POST":
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Ваш отзыв успешно отправлен!")
+            return redirect("thanks")
+    else:
+        form = ReviewForm()
+    return render(request, "create_review.html", {"form": form})
+
+
+def thanks(request):
+    return render(request, "thanks.html")
